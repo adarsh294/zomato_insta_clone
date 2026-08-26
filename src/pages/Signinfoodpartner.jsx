@@ -87,7 +87,7 @@ const Signinfoodpartner = () => {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don’t have an account?{' '}
-            <Link to="/foodpartner/register" className="font-semibold text-violet-600 hover:text-violet-700">
+            <Link to="/registerpartner" className="font-semibold text-violet-600 hover:text-violet-700">
               Create one
             </Link>
           </p>

@@ -3,45 +3,68 @@ import { createBrowserRouter } from "react-router-dom";
 import Error from "../pages/Error";
 import Registeruser from "../pages/Registeruser";
 import Signinpage from "../pages/Signinpage";
+import ProtectedRoute from "../pages/ProtectedRoute";
 import RegisterFoodpartner from "../pages/RegisterFoodpartner";
 import Signinfoodpartner from "../pages/Signinfoodpartner";
 import Home from "../pages/Home";
 import Upload from "../pages/Upload";
 import Account from "../pages/Account";
+import Page from "../pages/Page";
+import Save from "../pages/Save";
+import Useraccount from "../pages/Useraccount";
 
 export const Approuter = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
+ {
+  path:"/register",
+  element: <Registeruser/>
+ },
+ {
+  path:"/signinuser",
+  element:<Signinpage/>
+ },
+ {
+  path:"/signinpartner",
+  element:<Signinfoodpartner/>
+ },
+ {
+  path:"/registerpartner",
+  element:<RegisterFoodpartner/>
+ },
+ {
+    element: <ProtectedRoute />,
+    children: [
 
-  // USER
-  {
-    path: "/register",
-    element: <Registeruser />,
-  },
-  {
-    path: "/signin",
-    element: <Signinpage />,
-  },
+        {
+            path: "/reel",
+            element: <Home />,
+        },
 
-  // FOOD PARTNER
-  {
-    path: "/foodpartner/register",
-    element: <RegisterFoodpartner />,
-  },
-  {
-    path: "/foodpartner/signin",
-    element: <Signinfoodpartner />,
-  },
-  {
-    path:"/foodpartner/upload",
-    element:<Upload/>
-  },
-  {
-   path:"/account",
-   element:<Account/>
-  },
+        {
+            path: "/savereel",
+            element: <Save />,
+        },
+
+        {
+            path: "/",
+            element: <Page />,
+        },
+
+        {
+            path: "/foodpartner/upload",
+            element: <Upload />,
+        },
+
+        {
+            path: "/account/:foodPartnerId",
+            element: <Account />,
+        },
+        {
+            path:"/useraccount/:userid",
+            element:<Useraccount/>
+        }
+
+    ],
+},
   {
     path: "*",
     element: <Error />,

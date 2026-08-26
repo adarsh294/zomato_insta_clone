@@ -4,7 +4,9 @@ import { Link ,useNavigate} from "react-router-dom";
 import axios from "axios";
 const RegisterFoodpartner = () => {
   const [registerError, setRegisterError] = useState("");
+  const [profile, setProfile] = useState(null)
      const inputRef = useRef();
+     const fileref=useRef();
      const navigate = useNavigate();
   const {
     register,
@@ -44,18 +46,34 @@ const RegisterFoodpartner = () => {
     console.log("Create account");
     try{
        setRegisterError("");
-     const response = await axios.post(
-      "http://localhost:3000/api/foodpartner/register",
-      {
-        fullname: data.name,
-        email: data.email,
-        password: data.password,
-        otp: data.otp,
-      }
-    );
-    console.log(response.data);
-    console.log(data);
-     resetField("email");
+
+       if (!profile) {
+         setRegisterError("Please upload a profile image");
+         return;
+       }
+
+       const formData = new FormData();
+       formData.append("fullname", data.name);
+       formData.append("email", data.email);
+       formData.append("password", data.password);
+       formData.append("otp", data.otp);
+       formData.append("address", data.address);
+       formData.append("profile", profile);
+
+       const response = await axios.post(
+        "http://localhost:3000/api/foodpartner/register",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
+
+      console.log(response.data);
+      console.log(data);
+      resetField("email");
       resetField("name");
       resetField("password");
       navigate("/");
@@ -67,35 +85,50 @@ const RegisterFoodpartner = () => {
     console.log("STATUS:", err.response?.status);
   console.log("DATA:", err.response?.data);
   }
-
-  };
+};
+const handleprofile = async() =>{
+   fileref.current.click();
+}
 
   return (
-    <div className="flex min-h-screen lg:w-[500px] mx-auto items-center justify-center px-0 py-2">
+    <div className="flex min-h-screen lg:w-[500px] mx-auto items-center justify-center px-0 py-2 ">
       <div className="w-full overflow-hidden rounded-none border border-white/10 bg-slate-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:rounded-[30px]">
         <div className="p-6 sm:p-8">
 
-          <div className="mb-8 text-center">
-            <p className="text-[10px] font-medium uppercase tracking-[0.35em] text-slate-400">
-              welcome
-            </p>
+        <div className="a flex flex-col items-center">
 
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">
-              Create account As Foodpartner
-            </h1>
-          </div>
+  <p className="text-[10px] font-medium uppercase tracking-[0.35em] text-slate-400">
+    welcome
+  </p>
+  <div className="flex w-full justify-between h-[40px] items-center gap-[3px]">
+
+  <h1 className="mt-2 text-2xl font-bold tracking-tight text-white  left-[30px] h-fit">
+    Create account As Foodpartner
+  </h1>
+    <div onClick={handleprofile} className="bg-red-400 py-[3px] h-fit px-[8px] text-[13px] rounded-[6px] 
+      cursor-pointer active:scale-95 transition duration-100 self-end">upload profile</div>
+  </div>
+  <input
+    ref={fileref}
+    type="file"
+    className="hidden"
+    accept="image/*"
+    onChange={(e) => setProfile(e.target.files[0])}
+  />
+        </div>
+
 
           <form onSubmit={handleSubmit(handleRegister)} className="space-y-2">
 
             {/* NAME */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
-                Full name
+                  bussiess name
               </label>
 
               <input
                 type="text"
-                placeholder="Enter your name"
+                placeholder="Enter your bussiness"
                 {...register("name", {
                   required: "Name required",
                   minLength: {
@@ -164,6 +197,30 @@ const RegisterFoodpartner = () => {
                 </p>
               )}
             </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Full address
+              </label>
+
+              <input
+                type="text"
+                placeholder="Enter Address"
+                {...register("address", {
+                  required: "address required",
+                  minLength: {
+                    value: 3,
+                    message: "Address should be at least 3 characters",
+                  },
+                })}
+                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-400 focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-500/30"
+              />
+
+              {errors.address && (
+                <p className="text-red-400 text-sm">
+                  {errors.address.message}
+                </p>
+              )}
+            </div>
             <div ref={inputRef} style={{ display: "none" }}>
              <label className="mb-2 block text-sm font-medium text-slate-300">
                 Enter OTP
@@ -200,7 +257,7 @@ const RegisterFoodpartner = () => {
 
           <p className="mt-3 text-center text-sm text-slate-400">
             Already have an account?{" "}
-            <Link to="/foodpartner/signin">
+            <Link to="/signinpartner">
               <span className="font-semibold text-pink-400">
                 Sign in
               </span>

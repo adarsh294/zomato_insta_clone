@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import '../styles/Upload.css'
-import { API_ENDPOINTS } from '../config/api'
 import axios from 'axios'
 
 const Upload = () => {
@@ -99,18 +98,24 @@ const Upload = () => {
   }
 
   return (
-    <div className="lg:w-[500px] mx-auto">
-      <div className="upload-wrapper">
-        <h1>Upload Video</h1>
-        
-        {error && <div className="alert alert-error">{error}</div>}
-        {success && <div className="alert alert-success">{success}</div>}
+    <main className="upload-page">
+      <div className="upload-shell">
+        <header className="upload-header">
+          <div>
+            <p className="eyebrow">Food partner studio</p>
+            <h1>Create a new reel</h1>
+            <p className="upload-subtitle">Share the dish people should try next.</p>
+          </div>
+          <span className="upload-step">01 <span>/ 01</span></span>
+        </header>
 
-        <form onSubmit={handleSubmit} className=" flex flex-col gap-[10px]">
-          {/* Video Input */}
-          <div className="form-group">
-            <label htmlFor="video">Select Video *</label>
-            <div className="video-input-wrapper">
+        {error && <div className="alert alert-error" role="alert">{error}</div>}
+        {success && <div className="alert alert-success" role="status">{success}</div>}
+
+        <form onSubmit={handleSubmit} className="upload-form">
+          <div className="form-group media-group">
+            <label className="field-label" htmlFor="video">Your video <span>*</span></label>
+            <label className={`video-dropzone ${preview ? 'has-preview' : ''}`} htmlFor="video">
               <input
                 type="file"
                 id="video"
@@ -119,74 +124,65 @@ const Upload = () => {
                 disabled={loading}
                 className="video-input"
               />
-              <span className="file-hint">Accepted formats: MP4, WebM, OGG (Max 100MB)</span>
-            </div>
-            {preview && (
-              <div className="video-preview">
-                <video width="200" height="150" controls>
-                  <source src={preview} />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            )}
+              {preview ? (
+                <video className="video-preview" src={preview} controls />
+              ) : (
+                <span className="dropzone-content">
+                  <span className="upload-icon" aria-hidden="true">+</span>
+                  <strong>Choose a video to get started</strong>
+                  <span>MP4, WebM or OGG · up to 100MB</span>
+                </span>
+              )}
+            </label>
           </div>
 
-          {/* Title Input */}
           <div className="form-group">
-            <label htmlFor="title">Video Title *</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder="Enter video title"
-              maxLength={100}
-              disabled={loading}
-              className="form-input"
-            />
-            <span className="char-count">{formData.title.length}/100</span>
+            <label className="field-label" htmlFor="title">Title <span>*</span></label>
+            <div className="input-wrap">
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                placeholder="e.g. The crispiest paneer roll"
+                maxLength={100}
+                disabled={loading}
+                className="form-input"
+              />
+              <span className="char-count">{formData.title.length}/100</span>
+            </div>
           </div>
 
-          {/* Description Input */}
-          <div className="form-group mt-[-10px]">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Enter video description (optional)"
-              maxLength={500}
-              rows={5}
-              disabled={loading}
-              className="form-textarea"
-            />
-            <span className="char-count">{formData.description.length}/500</span>
+          <div className="form-group">
+            <label className="field-label" htmlFor="description">Caption <span className="optional">Optional</span></label>
+            <div className="input-wrap">
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="Tell your audience what makes it worth a visit..."
+                maxLength={500}
+                rows={4}
+                disabled={loading}
+                className="form-textarea"
+              />
+              <span className="char-count">{formData.description.length}/500</span>
+            </div>
           </div>
 
-          {/* Form Actions */}
-          <div className="form-actions mt-[-10px]">
-            <button
-              type="submit"
-            
-              disabled={loading}
-              className="btn btn-primary"
-            >
-              {loading ? 'Uploading...' : 'Upload Video'}
+          <div className="form-actions">
+            <button type="button" onClick={handleReset} disabled={loading} className="btn btn-secondary">
+              Clear
             </button>
-            <button
-              type="button"
-                onClick={handleReset}
-              disabled={loading}
-              className="btn btn-secondary"
-            >
-              Reset
+            <button type="submit" disabled={loading} className="btn btn-primary">
+              {loading ? 'Publishing...' : 'Publish reel'}
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </main>
   )
 }
 

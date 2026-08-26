@@ -200,7 +200,7 @@ const Registeruser = () => {
 
           <p className="mt-3 text-center text-sm text-slate-400">
             Already have an account?{" "}
-            <Link to="/SignIn">
+            <Link to="/signinuser">
               <span className="font-semibold text-pink-400">
                 Sign in
               </span>
@@ -209,7 +209,7 @@ const Registeruser = () => {
 
           <p className="mt-2 text-center text-sm text-slate-400">
             Create Account As Foodpartner{" "}
-            <Link to="/foodpartner/register">
+            <Link to="/registerpartner">
               <span className="font-semibold text-pink-400">
                 create Account
               </span>
