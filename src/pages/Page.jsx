@@ -7,8 +7,10 @@ const Page = () => {
   const authData = useSelector( (state) => state.active.activetab.foodpartner);
   const [reels, setReels] = useState([]);
    const [like, setLike] = useState([]);
+   const [save, setsave] = useState([]);
    const [foodpartner, setfoodpartner] = useState([]);
    const [following, setFollowing] = useState([]);
+
   const visit = (reel)=>{
  const foodPartnerId = reel.foodpartner._id;
 navigate(`/account/${foodPartnerId}`);
@@ -57,6 +59,26 @@ setFollowing(followlist);
 
     getReels();
   }, []);
+  const handlesave = async (reelId,food) =>{
+     try {
+      console.log("reelid",reelId,"\n","food",food)
+    const response = await axios.get(
+      "http://localhost:3000/api/food/save",
+      {
+        params: { reel: reelId,food:food},
+        withCredentials: true,
+      }
+    );
+    console.log(response.data);
+    setsave((prev) =>
+      prev.includes(reelId)
+        ? prev.filter((id) => id !== reelId)
+        : [...prev, reelId]
+    );
+  } catch (error) {
+    console.log(error.response?.data || error.message);
+  }
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -182,7 +204,7 @@ account_circle
 
                       <button>
                         <span
-                          className="material-symbols-outlined !text-[20px] sm:!text-[24px] md:!text-[28px]"
+                          className="material-symbols-outlined !text-[20px] sm:!text-[24px] md:!text-[28px]" 
                           style={{
                             fontVariationSettings:
                               like.find((item) => item.id == reel._id)
@@ -208,8 +230,8 @@ account_circle
 
                     </div>
 
-                    <button>
-                      <span className="material-symbols-outlined  !text-[20px] sm:!text-[24px] md:!text-[28px]">
+                    <button  onClick={()=> handlesave(reel._id,reel.foodpartner._id)}>
+                      <span className="material-symbols-outlined  !text-[20px] sm:!text-[24px] md:!text-[28px]" style={{fontVariationSettings: save.some((savedReel) => (savedReel?._id || savedReel) === reel._id) ? "'FILL' 1" : "'FILL' 0"}}>
                         bookmark
                       </span>
                     </button>

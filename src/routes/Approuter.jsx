@@ -12,6 +12,7 @@ import Account from "../pages/Account";
 import Page from "../pages/Page";
 import Save from "../pages/Save";
 import Useraccount from "../pages/Useraccount";
+import Userreel from "../pages/Userreel";
 
 export const Approuter = createBrowserRouter([
  {
@@ -61,6 +62,9 @@ export const Approuter = createBrowserRouter([
         {
             path:"/useraccount/:userid",
             element:<Useraccount/>
+        },{
+            path:"/foodpartnerreel/:reelbyid",
+            element:<Userreel/>
         }
 
     ],

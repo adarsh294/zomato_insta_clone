@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 const Useraccount = () => {
+  const nav=useNavigate();
   const [reels, setReels] = useState([]);
   const [partnername, setpartnername] = useState("");
   const [profile, setprofile] = useState("");
@@ -14,7 +15,7 @@ const Useraccount = () => {
   useEffect(() => {
     const fetchFoodPartner = async () => {
       try {
-        console.log("userid:", userid);
+       
 
         if (!userid || userid === "undefined") {
           return;
@@ -48,7 +49,7 @@ const Useraccount = () => {
 
         setReels(partnerData);
 
-        console.log("FOOD PARTNER RESPONSE:", response.data);
+       
 
       } catch (error) {
         console.log(
@@ -60,7 +61,10 @@ const Useraccount = () => {
 
     fetchFoodPartner();
   }, [userid]);
-
+ const handlereel = async (reelid) => {
+    console.log("reelid",reelid);
+    nav(`/foodpartnerreel/${reelid}`)
+ }
   return (
     <div className="min-h-screen bg-[#121212] text-white">
 
@@ -192,7 +196,7 @@ const Useraccount = () => {
                   bg-gray-900
                   overflow-hidden
                   rounded-[3px]
-                "
+                "  onClick={()=> handlereel(reel._id)}
               >
 
                 <video
@@ -223,25 +227,17 @@ const Useraccount = () => {
 
         ) : (
 
-          /* NO REELS */
+          
           <div className="h-[300px] flex flex-col items-center justify-center">
-
             <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center">
-
-              <i className="ri-video-line text-3xl text-gray-400"></i>
-
+          <i className="ri-video-line text-3xl text-gray-400"></i>
             </div>
-
             <p className="text-gray-400 mt-4">
               No reels added yet
             </p>
-
           </div>
-
         )}
-
       </div>
-
     </div>
   );
 };

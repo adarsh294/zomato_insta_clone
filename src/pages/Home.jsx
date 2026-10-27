@@ -261,24 +261,24 @@ const handlesave = async (reelId,food) => {
                 
                 {/* PROFILE */}
                  <img  onClick={() => visit(ele)}   onDoubleClick={() => visit(ele)}
-              className=" w-[40px]  md:w-[50px]  h-[40px]  md:h-[50px] rounded-full object-cover border-2 border-white/20"
+              className=" w-[60px] md:w-[50px]  h-[60px]  md:h-[50px] rounded-full object-cover border-2 border-white/20"
               src={ele.foodpartner?.profile || "./download.png" }
               alt="Account profile"
               />
 
                 {/* NAME */}
                 <div className="flex-1">
-                  <p className="text-white font-semibold text-sm">
+                  <p className="text-white font-semibold text-lg">
                     {ele.foodpartner?.name || "Food Partner"}
                   </p>
-                  <p id="follow" onClick={()=> follow(ele)} className="text-gray-300 rounded-[12px] cursor-pointer active:scale-95 transition duration-75 text-xs bg-gradient-to-r from-pink-400 to-purple-300 w-fit px-[0.5rem] py-[0.2rem] md:px-[1rem] md:py-[0.3rem]">
+                  <p id="follow" onClick={()=> follow(ele)} className="text-gray-300 rounded-[12px] cursor-pointer active:scale-95 transition duration-75 text-sm bg-gradient-to-r from-pink-400 to-purple-300 w-fit px-[0.5rem] py-[0.2rem] md:px-[1rem] md:py-[0.3rem]">
                   {following.includes(ele.foodpartner?._id) ? "following" : "follow"}
                   </p>
                 </div>
               </div>
-                <button  onClick={() => visit(ele)} className="py-[3px] md:py-[5px] px-[8px] rounded-2xl active:text-red-400 bg-gradient-to-t from-pink-500 to-purple-500 text-xs md:text-[18px] text-white">visit store</button>
+                <button  onClick={() => visit(ele)} className="py-[4px] md:py-[10px] px-[8px] rounded-2xl active:text-red-400 bg-gradient-to-t from-pink-500 to-purple-500 text-sm md:text-[18px] text-white">visit store</button>
               {/* DESCRIPTION */}
-              <p className="text-white  text-[12px] md:text-[16px]  line-clamp-2">
+              <p className="text-white  text-[12px] md:text-[16px] mt-[15px]  line-clamp-2">
                 {ele.description || "Amazing Reel"}
               </p>
             </div>
